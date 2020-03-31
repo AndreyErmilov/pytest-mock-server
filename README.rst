@@ -34,10 +34,10 @@ Usage
 -----
 
 .. code-block:: python
-    @pytest.mark.server(url='/v1/items/', response=json.dumps({'a': 1}))
-    def test_responses_200():
-        response = requests.get('http://localhost:5000/v1/items/)
-        assert response.status_code == 200
+  @pytest.mark.server(url='/v1/items/', response=json.dumps({'a': 1}))
+  def test_responses_200():
+      response = requests.get('http://localhost:5000/v1/items/)
+      assert response.status_code == 200
 
 Contributing
 ------------
