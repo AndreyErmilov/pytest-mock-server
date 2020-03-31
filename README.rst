@@ -18,24 +18,9 @@ pytest-mock-server
     :target: https://ci.appveyor.com/project/AndreyErmilov/pytest-mock-server/branch/master
     :alt: See Build Status on AppVeyor
 
-Mock server for pytest
+Mock server plugin for pytest
 
 ----
-
-This `pytest`_ plugin was generated with `Cookiecutter`_ along with `@hackebrot`_'s `cookiecutter-pytest-plugin`_ template.
-
-
-Features
---------
-
-* TODO
-
-
-Requirements
-------------
-
-* TODO
-
 
 Installation
 ------------
@@ -48,7 +33,11 @@ You can install "pytest-mock-server" via `pip`_ from `PyPI`_::
 Usage
 -----
 
-* TODO
+.. code-block:: python
+    @pytest.mark.server(url='/v1/items/', response=json.dumps({'a': 1}))
+    def test_responses_200():
+        response = requests.get('http://localhost:5000/v1/items/)
+        assert response.status_code == 200
 
 Contributing
 ------------

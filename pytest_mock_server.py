@@ -1,21 +1,19 @@
-# -*- coding: utf-8 -*-
-
 import pytest
 
 
-def pytest_addoption(parser):
-    group = parser.getgroup('mock-server')
-    group.addoption(
-        '--foo',
-        action='store',
-        dest='dest_foo',
-        default='2020',
-        help='Set the value for the fixture "bar".'
-    )
+def start_server(url: str, response: str, method: str = 'GET') -> None:
+    import threading
+    from flask import Flask, jsonify, request
+    app = Flask(__name__)
 
-    parser.addini('HELLO', 'Dummy pytest.ini setting')
+    @app.route(url, methods=[method])
+    def handler():
+        return jsonify(response)
+
+    threading.Thread(target=app.run, daemon=True).start()
 
 
-@pytest.fixture
-def bar(request):
-    return request.config.option.dest_foo
+def pytest_runtest_setup(item):
+    marker = item.get_closest_marker('server')
+    if marker is not None:
+        start_server(*marker.args, **marker.kwargs)

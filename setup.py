@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 import os
 import codecs
 from setuptools import setup
@@ -20,19 +17,17 @@ setup(
     maintainer_email='andrerm@ya.ru',
     license='MIT',
     url='https://github.com/AndreyErmilov/pytest-mock-server',
-    description='Mock server for pytest',
+    description='Mock server plugin for pytest',
     long_description=read('README.rst'),
     py_modules=['pytest_mock_server'],
-    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*',
-    install_requires=['pytest>=3.5.0'],
+    python_requires='>=3.0',
+    install_requires=['pytest>=3.5.0', 'flask>=1.1.1'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Pytest',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Testing',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
