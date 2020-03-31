@@ -1,0 +1,10 @@
+site_name: pytest-mock-server
+site_description: Mock server for pytest
+site_author: Andrey Ermilov
+
+theme: readthedocs
+
+repo_url: https://github.com/AndreyErmilov/pytest-mock-server
+
+pages:
+- Home: index.md
