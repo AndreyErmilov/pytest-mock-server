@@ -3,10 +3,9 @@ import codecs
 from setuptools import setup
 
 
-def readme():
-    with open('README.md', 'r') as fh:
-        description = fh.read()
-        return description
+def read(fname):
+    file_path = os.path.join(os.path.dirname(__file__), fname)
+    return codecs.open(file_path, encoding='utf-8').read()
 
 
 setup(
@@ -19,8 +18,7 @@ setup(
     license='MIT',
     url='https://github.com/AndreyErmilov/pytest-mock-server',
     description='Mock server plugin for pytest',
-    long_description=readme,
-    long_description_content_type="text/markdown",
+    long_description=read('README.rst'),
     py_modules=['pytest_mock_server'],
     python_requires='>=3.0',
     install_requires=['pytest>=3.5.0', 'flask>=1.1.1'],
