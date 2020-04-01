@@ -1,9 +1,8 @@
-import pytest
 
 
 def start_server(url: str, response: str, method: str = 'GET') -> None:
     import threading
-    from flask import Flask, jsonify, request
+    from flask import Flask, jsonify
     app = Flask(__name__)
 
     @app.route(url, methods=[method])
