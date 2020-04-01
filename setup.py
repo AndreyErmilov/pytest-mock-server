@@ -21,7 +21,7 @@ setup(
     long_description=read('README.rst'),
     py_modules=['pytest_mock_server'],
     python_requires='>=3.0',
-    install_requires=['pytest>=3.5.0', 'flask>=1.1.1'],
+    install_requires=['pytest>=3.5.0', 'flask>=1.0'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Pytest',
