@@ -69,10 +69,10 @@ Callback executes before response returns
   import requests
   import time
 
-  def sleep_ten(*args, **kwargs):
+  def sleep_two(*args, **kwargs):
       time.sleep(2)
 
-  @pytest.mark.server(url='/v1/books/', response={}, callback=sleep_ten)
+  @pytest.mark.server(url='/v1/books/', response={}, callback=sleep_two)
   def test_handler_responses():
       """Ensures Timeouts works"""
       with pytest.raises(requests.exceptions.Timeout):
