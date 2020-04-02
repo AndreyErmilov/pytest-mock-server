@@ -25,7 +25,9 @@ def add_route(url: str,
     :param headers: return headers
     :param callback: function will be executes before response returns
     """
-    endpoint = f'{url}::{method}::{status_code}'
+    endpoint = '{url}::{method}::{status_code}'.format(
+        url=url, method=method, status_code=status_code
+    )
 
     @app.route(url, endpoint=endpoint, methods=[method])
     def handler(*args, **kwargs):
