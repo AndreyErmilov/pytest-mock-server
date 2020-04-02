@@ -52,4 +52,4 @@ def pytest_runtest_setup(item):
         os.environ['WERKZEUG_RUN_MAIN'] = 'true'
         for marker in markers:
             add_route(*marker.args, **marker.kwargs)
-        thread = start_server()
+        start_server()
