@@ -51,7 +51,7 @@ More than one handlers
   import requests
 
   @pytest.mark.server(url='/v1/books/', response=[{'id': 1}], method='GET')
-  @pytest.mark.server(url='/v1/books/{book_id}/', response={'id': 1}, method='GET')
+  @pytest.mark.server(url='/v1/books/<book_id>/', response={'id': 1}, method='GET')
   def test_handler_responses():
       response = requests.get('http://localhost:5000/v1/books/')
       assert response.status_code == 200
