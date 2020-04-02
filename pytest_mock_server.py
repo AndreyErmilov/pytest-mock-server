@@ -42,6 +42,7 @@ def start_server():
     thread.start()
     return thread
 
+
 def pytest_configure(config):
     config.addinivalue_line('markers', 'server: mark test to run mock server')
 
