@@ -1,18 +1,55 @@
+import os
+import threading
+from typing import Optional, Dict, Callable, Any
+
+from flask import Flask, jsonify, request
+
+app = Flask(__name__)
 
 
-def start_server(url: str, response: str, method: str = 'GET') -> None:
-    import threading
-    from flask import Flask, jsonify
-    app = Flask(__name__)
+def add_route(url: str,
+              response: Optional[str] = None,
+              method: str = 'GET',
+              response_type: str = 'JSON',
+              status_code: int = 200,
+              headers: Optional[Dict[str, str]] = None,
+              callback: Optional[Callable[[Any], None]] = None,
+              ) -> None:
+    """
+    Add route to app.
+    :param url: the URL rule as string
+    :param response: return value
+    :param method: HTTP method
+    :param response_type: type of response (JSON, HTML, RSS)
+    :param status_code: return status code
+    :param headers: return headers
+    :param callback: function will be executes before response returns
+    """
+    endpoint = f'{url}::{method}::{status_code}'
 
-    @app.route(url, methods=[method])
-    def handler():
-        return jsonify(response)
+    @app.route(url, endpoint=endpoint, methods=[method])
+    def handler(*args, **kwargs):
+        if callback is not None:
+            callback(request, *args, **kwargs)
+        json_response = jsonify(response)
+        if headers is not None:
+            json_response.headers.update(headers)
+        return json_response, status_code
 
-    threading.Thread(target=app.run, daemon=True).start()
+
+def start_server():
+    thread = threading.Thread(target=app.run, daemon=True)
+    thread.start()
+    return thread
+
+def pytest_configure(config):
+    config.addinivalue_line('markers', 'server: mark test to run mock server')
 
 
 def pytest_runtest_setup(item):
-    marker = item.get_closest_marker('server')
-    if marker is not None:
-        start_server(*marker.args, **marker.kwargs)
+    markers = list(item.iter_markers('server'))
+    if len(markers) > 0:
+        os.environ['WERKZEUG_RUN_MAIN'] = 'true'
+        for marker in markers:
+            add_route(*marker.args, **marker.kwargs)
+        thread = start_server()

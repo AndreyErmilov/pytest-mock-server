@@ -29,16 +29,55 @@ You can install "pytest-mock-server" via `pip`_ from `PyPI`_::
 
 Usage
 -----
+One handler
+~~~~~~~~~~~
 .. code-block:: python
 
   import pytest
   import requests
 
-  @pytest.mark.server(url='/v1/items/', response={'key': 'value'}, method='GET')
-  def test_handler_responses_200():
-      response = requests.get('http://localhost:5000/v1/items/')
+  @pytest.mark.server(url='/v1/books/', response=[{'id': 1}], method='GET')
+  def test_handler_responses():
+      response = requests.get('http://localhost:5000/v1/books/')
       assert response.status_code == 200
-      
+      assert response.json() == [{'id': 1}]
+
+
+More than one handlers
+~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: python
+
+  import pytest
+  import requests
+
+  @pytest.mark.server(url='/v1/books/', response=[{'id': 1}], method='GET')
+  @pytest.mark.server(url='/v1/books/{book_id}/', response={'id': 1}, method='GET')
+  def test_handler_responses():
+      response = requests.get('http://localhost:5000/v1/books/')
+      assert response.status_code == 200
+      assert response.json() == [{'id': 1}]
+      response = requests.get('http://localhost:5000/v1/books/1/')
+      assert response.status_code == 200
+      assert response.json() == {'id': 1}
+
+
+Callback executes before response returns
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: python
+
+  import pytest
+  import requests
+  import time
+
+  def sleep_ten(*args, **kwargs):
+      time.sleep(2)
+
+  @pytest.mark.server(url='/v1/books/', response={}, callback=sleep_ten)
+  def test_handler_responses():
+      """Ensures Timeouts works"""
+      with pytest.raises(requests.exceptions.Timeout):
+          response = requests.get('http://localhost:5000/v1/books/', timeout=1)
+
 
 Contributing
 ------------
