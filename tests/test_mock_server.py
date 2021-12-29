@@ -16,6 +16,22 @@ def test_server_works(testdir):
     assert result.ret == 0
 
 
+def test_settings_works(testdir):
+    testdir.makepyfile("""
+            import pytest
+            import json
+            import urllib.request
+
+            @pytest.mark.server(url='/test/', response={})
+            @pytest.mark.server_settings(port=8000)
+            def test_another_port():
+                response = urllib.request.urlopen('http://localhost:8000/test/')
+                assert response.status == 200
+                assert json.loads(response.read()) == {}
+        """)
+    result = testdir.runpytest('-v')
+    assert result.ret == 0
+
 # def test_status_code_works(testdir):
 #     testdir.makepyfile("""
 #         import pytest

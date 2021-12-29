@@ -78,6 +78,20 @@ Callback executes before response returns
       with pytest.raises(requests.exceptions.Timeout):
           response = requests.get('http://localhost:5000/v1/books/', timeout=1)
 
+Custom settings for server
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: python
+
+  import pytest
+  import requests
+
+  @pytest.mark.server(url='/v1/books/', response={})
+  @pytest.mark.server_settings(port=8000)
+  def test_handler_responses():
+      response = requests.get('http://localhost:8000/v1/books/')
+      assert response.status_code == 200
+      assert response.json() == {}
+
 
 Contributing
 ------------
