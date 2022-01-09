@@ -39,8 +39,8 @@ def add_route(url: str,
         return json_response, status_code
 
 
-def start_server():
-    thread = threading.Thread(target=app.run, daemon=True)
+def start_server(**kwargs):
+    thread = threading.Thread(target=app.run, daemon=True, kwargs=kwargs)
     thread.start()
     return thread
 
@@ -51,8 +51,10 @@ def pytest_configure(config):
 
 def pytest_runtest_setup(item):
     markers = list(item.iter_markers('server'))
+    settings = next(item.iter_markers('server_settings'), None)
+    settings = settings.kwargs if settings else {}
     if len(markers) > 0:
         os.environ['WERKZEUG_RUN_MAIN'] = 'true'
         for marker in markers:
             add_route(*marker.args, **marker.kwargs)
-        start_server()
+        start_server(**settings)
