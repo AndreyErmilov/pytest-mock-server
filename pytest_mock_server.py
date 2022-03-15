@@ -1,4 +1,5 @@
 import os
+import time
 import threading
 from typing import Optional, Dict, Callable, Any
 
@@ -58,3 +59,6 @@ def pytest_runtest_setup(item):
         for marker in markers:
             add_route(*marker.args, **marker.kwargs)
         start_server(**settings)
+        # wait for server to start
+        time.sleep(1)
+
