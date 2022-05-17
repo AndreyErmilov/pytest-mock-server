@@ -58,6 +58,7 @@ def assert_server_ready(url, **settings) -> None:
 
     :param url: server url returned by `url_for`
     :param port: server port, default is 5000
+    :param server_ready_timeout: timeout for server to be ready, default is 3 seconds
     """
     port = settings.get('port', 5000)
     server_ready_timeout = settings.get('server_ready_timeout', 3)
