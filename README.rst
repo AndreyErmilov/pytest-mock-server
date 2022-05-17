@@ -85,8 +85,11 @@ Custom settings for server
   import pytest
   import requests
 
+  # Param `port`: The flask server will run on port 8000. Default is 5000.
+  # Param `server_ready_timeout`: The program will be hung up util the server is ready. 
+  #                               The max wait time is 5 seconds. Default is 3 seconds.
   @pytest.mark.server(url='/v1/books/', response={})
-  @pytest.mark.server_settings(port=8000)
+  @pytest.mark.server_settings(port=8000, server_ready_timeout=5)
   def test_handler_responses():
       response = requests.get('http://localhost:8000/v1/books/')
       assert response.status_code == 200
